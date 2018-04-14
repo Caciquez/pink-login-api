@@ -1,0 +1,27 @@
+{
+  "name": "pinkelephant",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Caciquez/PinkElephant.git"
+  },
+  "author": "ElephantTeam",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Caciquez/PinkElephant/issues"
+  },
+  "homepage": "https://github.com/Caciquez/PinkElephant#readme",
+  "dependencies": {
+    "async": "^2.6.0",
+    "body-parser": "^1.18.2",
+    "crypto": "^1.0.1",
+    "express": "^4.16.3",
+    "express-oauth-server": "^2.0.0",
+    "morgan": "^1.9.0"
+  }
+}
