@@ -19,9 +19,16 @@
   "dependencies": {
     "async": "^2.6.0",
     "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
     "crypto": "^1.0.1",
     "express": "^4.16.3",
     "express-oauth-server": "^2.0.0",
-    "morgan": "^1.9.0"
+    "knex": "^0.14.6",
+    "morgan": "^1.9.0",
+    "nodemailer": "^4.6.4",
+    "path": "^0.12.7",
+    "pg": "^7.4.1",
+    "pgtools": "^0.3.0",
+    "redis": "^2.8.0"
   }
 }
