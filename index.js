@@ -1,11 +1,11 @@
 
-
 const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const config = require('./secrets/rules');
 const redis = require('./wrappers/db');
+const mongoose = require('mongoose');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,6 +19,7 @@ app.use(cors());
 redis.connectRedis((err, cb) => {
   if (err) return callback(err, 500);
   console.log('Redis Connected!');
+  return callback(cb, 200);
 });
 
 app.use(require('./routes'));
@@ -29,6 +30,17 @@ app.use(require('./routes'));
 app.listen(port, (err) => {
   console.log(`Api Server is up on port ${port}`);
   printAllRoutes();
+
+
+  function split(thing) {
+    if (typeof thing === 'string') {
+      return thing.split('/');
+    } else if (thing.fast_slash) {
+      return '';
+    }
+    const match = thing.toString().replace('\\/?', '').replace('(?=\\/|$)', '$').match(/^\/\^((?:\\[.*+?^${}()|[\]\\\/]|[^.*+?^${}()|[\]\\\/])*)\$\//);
+    return match ? match[1].replace(/\\(.)/g, '$1').split('/') : `<complex:${thing.toString()}>`;
+  }
 
   function printAllRoutes() {
     function print(path, layer) {
@@ -41,16 +53,6 @@ app.listen(port, (err) => {
       }
     }
 
-    function split(thing) {
-      if (typeof thing === 'string') {
-        return thing.split('/');
-      } else if (thing.fast_slash) {
-        return '';
-      }
-      const match = thing.toString().replace('\\/?', '').replace('(?=\\/|$)', '$').match(/^\/\^((?:\\[.*+?^${}()|[\]\\\/]|[^.*+?^${}()|[\]\\\/])*)\$\//);
-      return match ? match[1].replace(/\\(.)/g, '$1').split('/') : `<complex:${thing.toString()}>`;
-    }
-
-    app._router.stack.forEach(print.bind(null, []));
+    app.router.stack.forEach(print.bind(null, []));
   }
 });
