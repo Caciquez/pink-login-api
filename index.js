@@ -4,7 +4,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const config = require('./secrets/rules');
-const redis = require('./wrappers/db');
 const mongoose = require('mongoose');
 
 const app = express();
@@ -15,11 +14,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
-
-redis.connectRedis((err, cb) => {
-  if (err) return callback(err, 500);
-  console.log('Redis Connected!');
-  return callback(cb, 200);
+mongoose.Promise = global.Promise;
+mongoose.connect(config.mongodb, (err, cb) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('Mongo Center is connected !!');
+  }
 });
 
 app.use(require('./routes'));
@@ -53,6 +54,6 @@ app.listen(port, (err) => {
       }
     }
 
-    app.router.stack.forEach(print.bind(null, []));
+    app._router.stack.forEach(print.bind(null, []));
   }
 });

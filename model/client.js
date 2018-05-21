@@ -5,7 +5,6 @@ const clientSchema = new mongoose.Schema({
   endereco: String,
   descricao: String,
   email: String,
-  cnpj: Number,
   evento: [{
     nome: String,
     local: String,
