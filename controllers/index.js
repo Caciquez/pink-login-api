@@ -1,4 +1,4 @@
-
+'use strict';
 
 function execCallback(res, err, code, ret) {
   if (err) {
@@ -23,4 +23,4 @@ exports.execute = (req, res, func) => {
 
 exports.executeWithNext = (req, res, next, func) => {
   func(req, res, next, (err, code, ret) => execCallback(res, err, code, ret));
-};
+};''
