@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const config = require('./secrets/rules');
-const mongoose = require('mongoose');
+
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -14,14 +14,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
-mongoose.Promise = global.Promise;
-mongoose.connect(config.mongodb, (err, cb) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log('Mongo Center is connected !!');
-  }
-});
 
 app.use(require('./routes'));
 
