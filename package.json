@@ -23,6 +23,7 @@
     "crypto": "^1.0.1",
     "express": "^4.16.3",
     "express-oauth-server": "^2.0.0",
+    "express-validator": "^5.2.0",
     "knex": "^0.14.6",
     "mongodb": "^3.1.0-beta4",
     "mongoose": "^5.1.0",

@@ -1,13 +1,20 @@
+'use strict';
 const router = require('express').Router();
-const client = require('./client');
-const evento = require('./evento');
 const user = require('./user');
+const OauthServer = require('express-oauth-server');
 
-// TODO
-// MAPBOX
-router.use('/client', client);
-router.use('/evento', evento);
-router.use('/user' ,user);
+//const oauth = new OauthServer();
+
+//router.post('/auth/acess', oauth.token());
+
+
+// Cria routes que não requerem autenticação
+router.use('/', require('./unauthed'));
+
+// Rotas Autenticadas
+
+router.use('/user', user);
+
 
 
 module.exports = router;
