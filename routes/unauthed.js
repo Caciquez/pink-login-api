@@ -10,6 +10,4 @@ router.get('/confirm/:hex/',
     param('hex').isUUID(),
     execute(userController.confirm));
 
-
-
 module.exports = router;

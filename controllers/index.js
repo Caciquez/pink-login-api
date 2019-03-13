@@ -1,13 +1,14 @@
 'use strict';
 
 const async = require('async');
-const db = require('../secrets/rules');
 const { validationResult, body } = require('express-validator/check');
-
+const db = require('../wrappers/db');
+const pool = db.getPool();
+const query = require('../querys/user');
+const errMsg = require('../wrappers/constants');
 
 exports.validateUserPSQL = (userInfo) => {
   return this.executeWithNext((req, res, next, callback) => {
-
     const email = req.body[userInfo];
 
     if (!userInfo) return next();
@@ -15,13 +16,11 @@ exports.validateUserPSQL = (userInfo) => {
     body(userInfo).isEmail()(req, res, () => {
       if (!validationResult(req).isEmpty()) return callback('Inválido', 400);
 
-      db.knex('users').where('email', email)
-        .then(result => {
-          if (result.length < 1) return callback('Inválido 2', 404);
-        }).catch((err) => { return callback(err, 404); });
+      pool.query(query.getUserByEmail, [email]).then(result => {
+        if (result.length < 1) return callback(errMsg.existentEmail, 404);
+      }).catch((err) => { return callback(err, 404); })
 
       next();
-
     });
   });
 };
@@ -32,10 +31,10 @@ exports.validateNewUser = (info) => {
     if (Array.isArray(info)) {
       async.each(info,
         (data, cb) => data(req, res, () => cb(validationResult(req).isEmpty() ? null : true)),
-        err => err ? callback('dados invalidos', 400) : next());
+        err => err ? callback(errMsg.invalidData, 400) : next());
     } else {
       info(req, res, () => {
-        validationResult(req).isEmpty() ? next() : callback('dado invalido', 400);
+        validationResult(req).isEmpty() ? next() : callback(errMsg.invalidData, 400);
       })
     }
   });
@@ -53,14 +52,10 @@ exports.validateDateBirth = (date) => {
 
     const date_birth = req.body[date];
 
-    console.log("date" + date_birth);
-    console.log("MIN" + minAge);
-    console.log("MAX" + maxAge);
-
     if (!date) next();
 
     body(date_birth).isBefore(minAge).isAfter(maxAge)(req, res, () => {
-      if (!validationResult(req).isEmpty()) return callback('Data Invalida.', 400);
+      if (!validationResult(req).isEmpty()) return callback(errMsg.invalidDate, 400);
 
       return next();
     });
@@ -68,7 +63,6 @@ exports.validateDateBirth = (date) => {
   });
 
 };
-
 
 
 exports.execute = (func) =>

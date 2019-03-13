@@ -1,6 +1,5 @@
 'use strict';
 const redis = require('redis');
-
 let db = redis.createClient();
 
 let keys = {

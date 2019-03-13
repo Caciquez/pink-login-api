@@ -13,7 +13,7 @@ const Regex = /^[A-ZÃÁÀÂÇÉÊÍÕÓÔÚÜ\040]+$/i;
 
 
 router.post('/login',
-    validateUserPSQL('email'),
+    validateUserPSQL('email'), //@ToDo Insert middlewares to validate device_token and APP_ID
     execute(control.login));
 
 
@@ -27,17 +27,17 @@ router.post('/add',
     //validateDateBirth('info.date_birth'), @TODO check how front-end is gonna send the DATE
     execute(control.add));
 
-// router.post('/get', (req, res, callback) => {
-//     controllers.execute(req, res, control.get);
-// });
+router.post('/get', (req, res, callback) => {
+    controllers.execute(req, res, control.get);
+});
 
-// router.put('/update', (req, res, callback) => {
-//     controllers.execute(req, res, control.update);
-// });
+router.put('/update', (req, res, callback) => {
+    controllers.execute(req, res, control.update);
+});
 
-// router.delete('/delete', (req, res, callback) => {
-//     controllers.execute(req, res, control.delete);
-// })
+router.delete('/delete', (req, res, callback) => {
+    controllers.execute(req, res, control.delete);
+})
 
 
 module.exports = router;
