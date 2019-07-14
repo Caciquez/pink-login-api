@@ -1,9 +1,12 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-useless-escape */
 'use strict';
 const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const config = require('./secrets/rules');
+// eslint-disable-next-line no-unused-vars
+// const config = require('./secrets/rules');
 
 
 const app = express();
@@ -14,12 +17,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
-app.use(require('./routes'));
+app.use(require('./lib/routes'));
 
 /**
  * Start do Servidor
  */
 app.listen(port, (err) => {
+   if(err) console.log(err)
+    
   console.log(`Api Server is up on port ${port}`);
   printAllRoutes();
 
